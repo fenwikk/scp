@@ -67,3 +67,16 @@ func (ctx *Ctx) Respond(itype discordgo.InteractionResponseType, data *discordgo
 func (ctx *Ctx) EditResponse(newrsp *discordgo.WebhookEdit) {
 	ctx.Session.InteractionResponseEdit(ctx.Session.State.User.ID, ctx.Interaction.Interaction, newrsp)
 }
+
+func (ctx *Ctx) DeleteResponse() {
+	ctx.Session.InteractionResponseDelete(ctx.Session.State.User.ID, ctx.Interaction.Interaction)
+}
+
+func (ctx *Ctx) RespondFollowup(data *discordgo.WebhookParams, wait bool) *Followup {
+	m := ctx.Session.FollowupMessageCreate(ctx.Session.State.User.ID, ctx.Interaction.Interaction, wait, data)
+
+	return &Followup{
+		Message: m,
+		ctx:     ctx,
+	}
+}
